@@ -16,7 +16,6 @@ namespace Services
         public event ItemFoundHandler FilteredItemFound;
 
         private readonly List<Predicate<string>> filteringRules = new List<Predicate<string>>();
-        private bool searchStopped;
 
         public FileSystemVisitor()
         {
@@ -28,14 +27,36 @@ namespace Services
             this.filteringRules.AddRange(filteringRules);
         }
 
-        public IEnumerable<string> Search(string path)
+        public List<string> Search(string path)
         {
             if(string.IsNullOrEmpty(path))
                 throw new ArgumentException("path to directory is not valid");
             SearchStarted?.Invoke();
+            var items = new List<string>();
             try
             {
-                return GetFiles(path);
+                foreach(var item in GetFiles(path))
+                {
+                    var itemFoundArgs = new ItemFoundArgs(item);
+                    if (Filter(item))
+                    {
+                        FilteredItemFound?.Invoke(this, itemFoundArgs);
+                    }
+                    else
+                    {
+                        ItemFound?.Invoke(this, itemFoundArgs);
+                    }
+                    if (itemFoundArgs.RemoveItemFromResult)
+                    {
+                        continue;
+                    }
+                    items.Add(item);
+                    if (itemFoundArgs.EndSearch)
+                    {
+                        break;
+                    }
+                }
+                return items;
             }
             finally
             {
@@ -47,70 +68,13 @@ namespace Services
         {
             foreach (var file in Directory.GetFiles(path))
             {
-                var itemFoundArgs = new ItemFoundArgs(file);
-                if (Filter(file))
-                {
-                    FilteredItemFound?.Invoke(this, itemFoundArgs);
-                }
-                else
-                {
-                    ItemFound?.Invoke(this, itemFoundArgs);
-                }
-
-                if (itemFoundArgs.EndSearch)
-                {
-                    searchStopped = true;
-                }
-                if (itemFoundArgs.RemoveItemFromResult)
-                {
-                    continue;
-                }
                 yield return file;
             }
             
             foreach (var subdirectory in Directory.GetDirectories(path))
             {
-                if(searchStopped)
-                    yield break;
-                
-                var dirFoundArgs = new ItemFoundArgs(subdirectory);
-                if (Filter(subdirectory))
-                {
-                    FilteredItemFound?.Invoke(this, dirFoundArgs);
-                }
-                else
-                {
-                    ItemFound?.Invoke(this, dirFoundArgs);
-                }
-                if (dirFoundArgs.EndSearch)
-                {
-                    searchStopped = true;
-                }
-                if (!dirFoundArgs.RemoveItemFromResult)
-                {
-                    yield return subdirectory;
-                }
-
-                
                 foreach (var file in GetFiles(subdirectory))
                 {
-                    var itemFoundArgs = new ItemFoundArgs(file);
-                    if (Filter(file))
-                    {
-                        FilteredItemFound?.Invoke(this, new ItemFoundArgs(file));
-                    }
-                    else
-                    {
-                        ItemFound?.Invoke(this,new ItemFoundArgs(file));
-                    }
-                    if (itemFoundArgs.EndSearch)
-                    {
-                        searchStopped = true;
-                    }
-                    if (itemFoundArgs.RemoveItemFromResult)
-                    {
-                        continue;
-                    }
                     yield return file;
                 }
             }
