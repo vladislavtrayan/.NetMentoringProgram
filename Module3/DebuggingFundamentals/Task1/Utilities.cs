@@ -50,16 +50,16 @@ namespace Task1
             }
         }
         
-        public static void Sort<T,V>(this T[] items,Expression<Func<T,V>> compareBy, Func<V,V,bool> comparator) where T : class
+        public static void Sort<T>(this T[] items, Func<T,T,bool> comparator)
         {
-            if(items == null || comparator == null || compareBy == null)
+            if(items == null || comparator == null)
                 throw new ArgumentNullException();
             
             for (var i = 0; i < items.Count(); i++)
             {
                 for (var j = 0; j < items.Count() - 1; j++)
                 {
-                    if (comparator(compareBy.Compile()(items[j]), compareBy.Compile()(items[j + 1])))
+                    if (comparator((items[j]),(items[j + 1])))
                     {
                         var temp = items[j];
                         items[j] = items[j + 1];

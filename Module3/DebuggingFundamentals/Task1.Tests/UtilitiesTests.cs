@@ -44,7 +44,7 @@ namespace Task1.Tests
                 new Product("nam", 30.0d),
             };
             
-            products.Sort(p => p.Name, (x, y) => x.Length > y.Length);
+            products.Sort( (x, y) => x.Name.Length > y.Name.Length);
             
             var expectedResult = new Product[]
             {
