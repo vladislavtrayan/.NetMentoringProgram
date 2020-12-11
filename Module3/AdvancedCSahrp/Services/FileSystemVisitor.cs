@@ -46,6 +46,10 @@ namespace Services
                     {
                         ItemFound?.Invoke(this, itemFoundArgs);
                     }
+                    if (itemFoundArgs.RemoveItemFromResult && itemFoundArgs.EndSearch)
+                    {
+                        break;
+                    }
                     if (itemFoundArgs.RemoveItemFromResult)
                     {
                         continue;
