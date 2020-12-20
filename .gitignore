@@ -6,8 +6,6 @@
 *.user
 *.userosscache
 *.sln.docstates
-*.zip
-*.idea
 
 # Files, generated during the Merge resolve
 *.orig
@@ -24,6 +22,7 @@
 [Xx]86/
 [Bb]uild/
 bld/
+.idea/
 [Bb]in/
 [Oo]bj/
 
