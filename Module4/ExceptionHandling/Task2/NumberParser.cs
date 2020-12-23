@@ -7,8 +7,9 @@ namespace Task2
 {
     public class NumberParser : INumberParser
     {
-        const string signs = "+-";
-        const string numbers = "0123456789";
+        private const char Minus = '-';
+        private const char Plus = '+';
+        private const string Numbers = "0123456789";
         
         public int Parse(string stringValue)
         {
@@ -23,9 +24,9 @@ namespace Task2
             var positive = true;
 
 
-            if (stringValue.Contains(signs[0]) || stringValue.Contains(signs[1]))
+            if (stringValue.Contains(Minus) || stringValue.Contains(Plus))
             {
-                if (stringValue[0] == '-') positive = false;
+                if (stringValue[0] == Minus) positive = false;
                 signlessValue += stringValue.Remove(0, 1);
             }
             else
@@ -35,24 +36,20 @@ namespace Task2
 
             foreach (var c in signlessValue)
             {
-                if (!numbers.Contains(c))
+                if (!Numbers.Contains(c))
                     throw new FormatException();
                 result *= 10;
                 result += c - '0';
-            }
 
-            if (positive)
-            {
-                if(result - int.MaxValue > 0)
+                if(positive && result - int.MaxValue > 0)
+                    throw new OverflowException();
+                if(!positive && int.MinValue + result > 0)
                     throw new OverflowException();
             }
-            else
-            {
-                result = (-result);
-                if(result - int.MinValue < 0)
-                    throw new OverflowException();
-            }
-            return (int)result;
+            if(positive)
+                return (int)result;
+
+            return -(int) result;
         }
     }
 }

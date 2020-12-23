@@ -1,5 +1,6 @@
 ﻿using System;
 using Task3.CustomExceptions;
+using Task3.Data;
 using Task3.DoNotChange;
 
 namespace Task3
@@ -21,7 +22,7 @@ namespace Task3
             }
             catch (AddUserTaskException e)
             {
-                model.AddAttribute("action_result", e.Message);
+                model.AddAttribute("action_result", DataProvider.GetErrorMessage(e));
                 return false;
             }
             return true;

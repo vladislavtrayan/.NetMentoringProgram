@@ -54,6 +54,7 @@ namespace Task2.Tests
         [TestCase("-2147483649")]
         [TestCase("9999999999999999")]
         [TestCase("-9999999999999999")]
+        [TestCase("922337203685477580792233720368547758")]
         public void Parse_NumberOutOfInt32Range_ThrowFormatException(string stringValue)
         {
             Assert.That(() => _parser.Parse(stringValue), Throws.InstanceOf<OverflowException>());
