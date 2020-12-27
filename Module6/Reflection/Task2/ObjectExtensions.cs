@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Mono.Reflection;
 
 namespace Task2
 {
@@ -6,12 +6,13 @@ namespace Task2
     {
         public static void SetReadOnlyProperty(this object obj, string propertyName, object newValue)
         {
-            throw new NotImplementedException();
+            var backingField = obj.GetType().GetProperty(propertyName).GetBackingField();;
+            backingField.SetValue(obj, newValue);
         }
 
         public static void SetReadOnlyField(this object obj, string filedName, object newValue)
         {
-            throw new NotImplementedException();
+            obj.GetType().GetField(filedName).SetValue(obj, newValue);
         }
     }
 }
