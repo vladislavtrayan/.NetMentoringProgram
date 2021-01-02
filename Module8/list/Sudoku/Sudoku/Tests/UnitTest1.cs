@@ -6,7 +6,7 @@ namespace Tests
     public class UnitTest1
     {
         private int[,] _validSolution = {
-            {5,4,4,6,7,8,9,1,2},
+            {5,3,4,6,7,8,9,1,2},
             {6,7,2,1,9,5,3,4,8},
             {1,9,8,3,4,2,5,6,7},
             {8,5,9,7,6,1,4,2,3},
@@ -20,7 +20,7 @@ namespace Tests
         [Fact]
         public void FunctionReturnTrueOnValidSolution()
         {
-            Assert.True(Sudoku.IsSolutionValid(_validSolution));
+            Assert.True(Sudoku.Sudoku.IsValid(_validSolution));
         }
     }
 }
