@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Tests
 {
-    public class UnitTest1
+    public class SudokuTests
     {
         private int[,] _validSolution = {
             {5,3,4,6,7,8,9,1,2},
@@ -21,6 +21,20 @@ namespace Tests
         public void FunctionReturnTrueOnValidSolution()
         {
             Assert.True(Sudoku.Sudoku.IsValid(_validSolution));
+        }
+
+        [Fact]
+        public void FailOnZeroInSolution()
+        {
+            var solutionWithZero =  _validSolution;
+            solutionWithZero[0, 0] = 0;
+            Assert.False(Sudoku.Sudoku.IsValid(solutionWithZero));
+        }
+        
+        [Fact]
+        public void ThrowExceptionIfArgumentIsNull()
+        {
+            Assert.Throws<ArgumentNullException>(() => Sudoku.Sudoku.IsValid(null));
         }
     }
 }
