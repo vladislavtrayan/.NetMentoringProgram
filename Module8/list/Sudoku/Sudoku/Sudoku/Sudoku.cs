@@ -10,6 +10,9 @@ namespace Sudoku
         {
             if(solution == null)
                 throw new ArgumentNullException();
+            if(solution.GetLength(0) != solution.GetLength(1))
+                throw new ArgumentException();
+            
             for (int i = 0; i < solution.GetLength(0); i++)
             {
                 var rowSet = new HashSet<int>();

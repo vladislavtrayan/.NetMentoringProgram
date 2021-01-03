@@ -45,5 +45,12 @@ namespace Tests
             invalidSolution[2, 2] = _validSolution[1, 1];
             Assert.False(Sudoku.Sudoku.IsValid(invalidSolution));
         }
+        
+        [Fact]
+        public void ThrowsArgumentExceptionIfArrayIsNotSquare()
+        {
+            var invalidSolution = new int[2,3];
+            Assert.Throws<ArgumentException>(() => Sudoku.Sudoku.IsValid(invalidSolution));
+        }
     }
 }
