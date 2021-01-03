@@ -36,5 +36,14 @@ namespace Tests
         {
             Assert.Throws<ArgumentNullException>(() => Sudoku.Sudoku.IsValid(null));
         }
+
+        [Fact]
+        public void ReturnFalseOnInvalidSolution()
+        {
+            var invalidSolution = _validSolution;
+            invalidSolution[1, 1] = _validSolution[2, 2];
+            invalidSolution[2, 2] = _validSolution[1, 1];
+            Assert.False(Sudoku.Sudoku.IsValid(invalidSolution));
+        }
     }
 }
