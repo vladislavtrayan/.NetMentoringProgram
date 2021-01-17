@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using SetStructure;
+using Tests.Entities;
 using Xunit;
 
 namespace Tests
@@ -24,6 +25,54 @@ namespace Tests
             Assert.Equal(1 ,set.Count);
         }
         
+        [Fact]
+        public void SetStrcutureUnderLoad()
+        {
+            int Min = 0;
+            int Max = 100000000;
+
+            int[] testData = new int[100000];
+            Random randNum = new Random();
+            for (int i = 0; i < testData.Length; i++)
+            {
+                testData[i] = randNum.Next(Min, Max);   
+            }
+            
+            DateTime start = DateTime.Now;
+            var set = new Set<int>();
+            foreach (var number in testData)
+            {
+                set.Add(number);
+            }
+
+            foreach (var number in testData)
+            {
+                Assert.True(set.Contains(number));
+            }
+
+            DateTime end = DateTime.Now;
+            TimeSpan ts = end - start;
+        }
+        
+        [Fact]
+        public void SearchForObjectTypeInSetWhenGetHashCodeIsOverrided()
+        {
+            var set = new Set<User>();
+            set.Add(new User(){Name = "Petya"});
+            set.Add(new User(){Name = "Vasya"});
+            Assert.True(set.Contains(new User(){Name = "Vasya"}));
+        }
+        
+        [Fact]
+        public void SearchForObjectTypeInSetWithDifferentHashCode()
+        {
+            var set = new Set<UserWithDefaultHashCode>();
+            set.Add(new UserWithDefaultHashCode(){Name = "Petya"});
+            set.Add(new UserWithDefaultHashCode(){Name = "Vasya"});
+            var expectedElement = new UserWithDefaultHashCode() {Name = "Vasya"};
+            Assert.False(set.Contains(expectedElement));
+        }
+
         [Fact]
         public void ElementIsRemovedWithDicrement()
         {

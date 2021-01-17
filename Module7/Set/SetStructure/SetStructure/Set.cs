@@ -6,11 +6,11 @@ using SetStructure.CustomExceptions;
 
 namespace SetStructure
 {
-    public class Set<T> : ISet<T> where T : IComparable
+    public class Set<T> : ISet<T>
     {
-        private readonly List<T> _items = new List<T>();
+        private readonly HashBinaryTree<T> _items = new HashBinaryTree<T>();
 
-        public int Count { get; set; }
+        public int Count { get; private set; }
 
         public void Add(T item)
         {

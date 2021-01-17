@@ -4,7 +4,7 @@ namespace SetStructure
 {
     public interface ISet<T> : IEnumerable<T>
     {
-        public int Count { get; set; }
+        public int Count { get; }
         public void Add(T item);
         public void Remove(T item);
         public bool Contains(T item);
