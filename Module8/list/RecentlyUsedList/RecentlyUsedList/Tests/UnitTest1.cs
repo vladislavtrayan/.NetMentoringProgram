@@ -37,10 +37,24 @@ namespace Tests
         }
         
         [Fact]
-        public void NegativeInxedIsNotAlowed()
+        public void NegativeIndexThrowsException()
         {
             var list = new RecentYUsedList();
             Assert.Throws<IndexOutOfRangeException>(() => list[-1]);
+        }
+
+        [Fact] 
+        public void NullInsertionThrowsException()
+        {
+            var list = new RecentYUsedList();
+            Assert.Throws<ArgumentNullException>(() => list.Add(null));
+        }
+        
+        [Fact] 
+        public void ListIsEmptyByDefault()
+        {
+            var list = new RecentYUsedList();
+            Assert.Equal(0, list.Count);
         }
     }
 }
