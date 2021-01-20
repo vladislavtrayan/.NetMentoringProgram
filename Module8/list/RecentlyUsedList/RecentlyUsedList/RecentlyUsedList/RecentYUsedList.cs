@@ -11,6 +11,8 @@ namespace RecentlyUsedList
 
         public void Add(string element)
         {
+            if(element == null)
+                throw new ArgumentNullException();
             if (_storage.Contains(element))
             {
                 _storage.Remove(element);
