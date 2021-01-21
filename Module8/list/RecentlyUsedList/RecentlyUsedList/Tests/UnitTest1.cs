@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using RecentlyUsedList;
 using Xunit;
 
@@ -55,6 +56,32 @@ namespace Tests
         {
             var list = new RecentYUsedList();
             Assert.Equal(0, list.Count);
+        }
+        
+        [Fact] 
+        public void ListCapacityIsNotValid()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() => new RecentYUsedList(-1));
+        }
+        
+        [Fact] 
+        public void ListAutomaticallyRemovingItemsOutOfBoundedCapacity()
+        {
+            var list = new RecentYUsedList(1);
+            list.Add("first");
+            list.Add("second");
+            Assert.Equal(1, list.Count);
+            Assert.Equal("second", list[0]);
+        }
+        
+        [Fact] 
+        public void CapacityByDefaultIsFive()
+        {
+            var list = new RecentYUsedList(1);
+            for(int i = 0; i <= 10; i++)
+                list.Add(i.ToString());
+            
+            Assert.Equal(5, list.Count);
         }
     }
 }

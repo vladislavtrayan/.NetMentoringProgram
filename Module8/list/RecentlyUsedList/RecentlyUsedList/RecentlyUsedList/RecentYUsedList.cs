@@ -6,8 +6,16 @@ namespace RecentlyUsedList
 {
     public class RecentYUsedList
     {
+        public RecentYUsedList(int capacity = 5)
+        {
+            if(capacity <= 0)
+                throw new ArgumentOutOfRangeException("Capacity should be greater than zero");
+            Capacity = capacity;
+        }
+        
         private readonly List<string> _storage = new List<string>();
         public int Count => _storage.Count;
+        public int Capacity { get;  }
 
         public void Add(string element)
         {
