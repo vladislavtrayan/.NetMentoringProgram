@@ -58,10 +58,12 @@ namespace Tests
             Assert.Equal(0, list.Count);
         }
         
-        [Fact] 
-        public void ListCapacityIsNotValid()
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(0)]
+        public void ListCapacityIsNotValid(int capacity)
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new RecentYUsedList(-1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new RecentYUsedList(capacity));
         }
         
         [Fact] 
@@ -77,11 +79,13 @@ namespace Tests
         [Fact] 
         public void CapacityByDefaultIsFive()
         {
-            var list = new RecentYUsedList(1);
+            var list = new RecentYUsedList();
             for(int i = 0; i <= 10; i++)
                 list.Add(i.ToString());
             
             Assert.Equal(5, list.Count);
+            Assert.Equal("10", list[0]);
+            Assert.Equal("6", list[4]);
         }
     }
 }
