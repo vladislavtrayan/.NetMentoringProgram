@@ -25,6 +25,11 @@ namespace RecentlyUsedList
             {
                 _storage.Remove(element);
             }
+
+            if (Count == Capacity)
+            {
+                _storage.Remove(_storage[0]);
+            }
             _storage.Add(element);
         }
         
